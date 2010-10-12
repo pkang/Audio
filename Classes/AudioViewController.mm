@@ -14,9 +14,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	NSString *fileName = [[NSBundle mainBundle] pathForResource:@"Test" ofType:@"m4a"];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showWord:) name:@"word" object:nil];
 	NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(playSound:) object:fileName];
 	[thread start];
 	NSLog(@"view did load");
+	
+}
+
+- (void)showWord:(NSNotification *)notification {
+	NSLog(@"notification %@", notification.object);
 }
 
 - (void)playSound:(NSString *)fileName {

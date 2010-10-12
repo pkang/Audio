@@ -170,6 +170,7 @@ OSStatus AQPlayer::StartQueue(BOOL inResume)
 		
 		static const float interval = 0.1;
 		static float seconds = 0.0;
+		static NSString *lastWord = nil;
 		do {       
 			NSString *word = nil;
 			if (seconds < 0.1) {
@@ -181,7 +182,10 @@ OSStatus AQPlayer::StartQueue(BOOL inResume)
 			} else {
 				word = @"animals!";
 			}
-			NSLog(@"%f %@", seconds, word);
+			if (lastWord != word) {
+				lastWord = word;
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"word" object:word];
+			}
 			seconds += interval;
 			CFRunLoopRunInMode(kCFRunLoopDefaultMode, interval, false);
 		} while (mIsRunning);
